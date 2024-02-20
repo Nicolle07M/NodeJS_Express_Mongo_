@@ -17,7 +17,7 @@ const cursoSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    alumos: {
+    alumnos: {
         type: Number,
         default: 0
     },
