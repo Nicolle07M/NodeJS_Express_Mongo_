@@ -4,8 +4,24 @@ const Joi = require('@hapi/joi');
 const ruta  = express.Router();
 
 
-ruta.get('/', (req,res) => {
-    res.json('Respuesta a peticion GET de USUARIOS funcionando correctamente...');
+//Funcion asincrona para alistar todos los usuarios activos
+async function listarUsuariosActivos(){
+    let usuarios = await Usuario.find({"estado": true});
+    return usuarios;
+}
+
+//Endpoint de tipo GET para el recurso usuarios. Lista de todos los usuarios
+ruta.get('/',(req, res) => {
+    let resultado = listarUsuariosActivos();
+    resultado.then(usuarios => {
+        res.json(usuarios)
+    }).catch(err => {
+        res.status(400).json(
+            {
+                err
+            }
+        )
+    })
 });
 
 
@@ -115,6 +131,7 @@ ruta.delete('/:email', (req, res) =>{
         })
     });
 });     
+
 
 
 module.exports = ruta;
